@@ -1,16 +1,15 @@
 package unicv.poo.eventos_api.service;
 
-
 import unicv.poo.eventos_api.entity.Local;
 import unicv.poo.eventos_api.dto.LocalRequestDTO;
 import unicv.poo.eventos_api.dto.LocalResponseDTO;
 import unicv.poo.eventos_api.mapper.LocalMapper;
+import unicv.poo.eventos_api.repository.EventoRepository;
 import unicv.poo.eventos_api.repository.LocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class LocalService {
@@ -21,31 +20,33 @@ public class LocalService {
     @Autowired
     private LocalMapper localMapper;
 
-    //  Listar Locais (GET /api/locais)
     public List<LocalResponseDTO> listarTodos(){
         List<Local> locais = localRepository.findAll();
         return localMapper.toResponseDTOList(locais);
-
     }
 
-    // Buscar Local por ID (GET /api/locais/{id})
-    public Optional<LocalResponseDTO> buscarPorId(Long id){
+    public LocalResponseDTO buscarPorId(Long id){
         Local local = localRepository.findById(id)
-        .orElseThrow( () -> new RuntimeException("Local não encontrado com o ID: " + id));
+            .orElseThrow(() -> new RuntimeException("Local não encontrado com o ID: " + id));
         return localMapper.toResponseDTO(local);
     }
 
-    //  Registrar Local (POST /api/locais)
-    public LocalRequestDTO salvar(LocalRequestDTO localRequestDTO){
-        Local local = localMapper.toEntity(LocalRequestDTO);
+    public LocalResponseDTO salvar(LocalRequestDTO localRequestDTO){
+        Local local = localMapper.toEntity(localRequestDTO);
         Local localSalvo = localRepository.save(local);
         return localMapper.toResponseDTO(localSalvo);
     }
 
-     //  Atualizar Local (PUT /api/locais/{id})
-     public LocalResponseDTO atualizar(Long id, LocalRequestDTO localRequestDTO){
-        if (!localRepository.existsById(id)){
-            throw new RuntimeException("Não é possivel atualizar: Local não encontrado.");
+    public LocalResponseDTO atualizar(Long id, LocalRequestDTO localRequestDTO){
+        Local localExistente = localRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Não é possível atualizar: Local não encontrado."));
+
+        if(localRequestDTO.capacidade()< localExistente.getCapacidade()){
+            boolean possuiEventoMaior = EventoRepository.existsByLocalIdAndParticipantesMaxGreaterThan(id, localRequestDTO.capacidade());
+
+            if(possuiEventoMaior){
+                throw new RuntimeException("Não é possível reduzir a capacidade: existe um evento previsto que excede a nova capacidade.");
+            }
         }
 
         Local local = localMapper.toEntity(localRequestDTO);
@@ -53,19 +54,13 @@ public class LocalService {
 
         Local localAtualizado = localRepository.save(local);
         return localMapper.toResponseDTO(localAtualizado);
-     }
+    }
+    
 
-
-     // Remover Local (DELETE /api/locais/{id})
-    public void deletar (Long id){
+    public void deletar(Long id){
         if(!localRepository.existsById(id)){
             throw new RuntimeException("Não é possivel remover: Local não encontrado.");
         }
-        localRepository.deletarById(id);
+        localRepository.deleteById(id);
     }
-
-
-
-
-
 }

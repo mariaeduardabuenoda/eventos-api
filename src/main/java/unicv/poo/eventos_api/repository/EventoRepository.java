@@ -6,4 +6,8 @@ import unicv.poo.eventos_api.entity.Ingresso;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Ingresso, Long> {
+    static boolean existsByLocalIdAndParticipantesMaxGreaterThan(Long localId, int capacidade) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existsByLocalIdAndParticipantesMaxGreaterThan'");
+    }
 }
