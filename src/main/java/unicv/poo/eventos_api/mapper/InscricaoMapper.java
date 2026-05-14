@@ -1,6 +1,6 @@
 package unicv.poo.eventos_api.mapper;
 
-import org.mapstruct.Mapper;    
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import unicv.poo.eventos_api.dto.InscricaoRequestDTO;
 import unicv.poo.eventos_api.dto.InscricaoResponseDTO;

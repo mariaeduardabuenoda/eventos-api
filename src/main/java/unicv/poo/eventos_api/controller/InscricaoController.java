@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequestMapping("/api/inscricao")
 public class InscricaoController {
-    
+
     private final InscricaoService service;
     private final InscricaoMapper mapper;
 
-    public InscricaoController(InscricaoService service, InscricaoMapper mapper){
+    public InscricaoController(InscricaoService service, InscricaoMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InscricaoResponseDTO realizarInscricao(@RequestBody @Valid InscricaoRequestDTO RequestDto){
+    public InscricaoResponseDTO realizarInscricao(@RequestBody @Valid InscricaoRequestDTO RequestDto) {
         Inscricao entidade = mapper.toEntity(RequestDto);
 
         Inscricao salva = service.realizarInscricao(entidade);
@@ -42,6 +42,5 @@ public class InscricaoController {
     public List<InscricaoResponseDTO> listarTodas() {
         return service.listarTodas().stream().map(mapper::toResponseDto).toList();
     }
-    
 
 }
