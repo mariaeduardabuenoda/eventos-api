@@ -83,6 +83,7 @@ public class IngressoService {
         return ingressoMapper.toResponseDto(ingressoRepository.save(ingresso));
     };
 
+    @Transactional
     public void deletar(Long id) {
 
         if (!ingressoRepository.existsById(id)) {

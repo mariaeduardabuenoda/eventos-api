@@ -39,7 +39,7 @@ public class IngressoController {
     @PutMapping("/{id}")
     public ResponseEntity<IngressoResponseDto> atualizar(
             @PathVariable Long id,
-            @RequestBody IngressoRequestDto requestDto
+            @Valid @RequestBody IngressoRequestDto requestDto
     ) {
         IngressoResponseDto responseDto = ingressoService.atualizar(id, requestDto);
         return ResponseEntity.ok(responseDto);
