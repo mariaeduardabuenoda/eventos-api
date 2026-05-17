@@ -19,11 +19,13 @@ public class Inscricao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long participanteId;
+    @ManyToOne
+    @JoinColumn(name = "participante_id", nullable = false)
+    private Participante participante;
 
-    @Column(nullable = false)
-    private Long eventoId;
+    @ManyToOne
+    @JoinColumn(name = "evento_id", nullable = false)
+    private Evento evento;
 
     @Column(nullable = false)
     private LocalDateTime dataInscricao;

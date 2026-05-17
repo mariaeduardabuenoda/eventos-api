@@ -1,9 +1,7 @@
 package unicv.poo.eventos_api.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import unicv.poo.eventos_api.enums.TipoIngressoEnum;
 import unicv.poo.eventos_api.validation.ValueOfEnum;
 
@@ -14,7 +12,7 @@ public record IngressoRequestDto(
         @NotNull(message = "O id do evento é obrigatório.")
         Long eventoId,
 
-        @NotBlank(message = "O tipo é obrigatório.")
+        @NotNull(message = "O tipo é obrigatório.")
         @ValueOfEnum(enumClass = TipoIngressoEnum.class)
         String tipo,
 
@@ -22,8 +20,8 @@ public record IngressoRequestDto(
         @Positive(message = "O preço deve ser maior que zero.")
         BigDecimal preco,
 
-        @NotNull(message = "A quantidade não pode ser nula")
-        @PositiveOrZero(message = "A quantidade não pode ser negativa.")
+        @NotNull(message = "A quantidade é obrigatória.")
+        @Positive(message = "A quantidade deve ser positiva.")
         Integer quantidade
 
 ) {
