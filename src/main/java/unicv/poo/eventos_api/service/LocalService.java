@@ -1,16 +1,17 @@
 package unicv.poo.eventos_api.service;
 
 import unicv.poo.eventos_api.entity.Local;
+import unicv.poo.eventos_api.exception.RegraNegocioException;
 import unicv.poo.eventos_api.dto.LocalRequestDTO;
 import unicv.poo.eventos_api.dto.LocalResponseDTO;
 import unicv.poo.eventos_api.mapper.LocalMapper;
 import unicv.poo.eventos_api.repository.EventoRepository;
 import unicv.poo.eventos_api.repository.LocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException; 
+
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class LocalService {
 
     public LocalResponseDTO buscarPorId(@NonNull Long id){
         Local local = localRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Local não encontrado com o ID: " + id));
+            .orElseThrow(() -> new EntityNotFoundException("Local não encontrado com o ID: " + id));
         return localMapper.toResponseDTO(local);
     }
 
@@ -44,12 +45,12 @@ public class LocalService {
 
     public LocalResponseDTO atualizar(Long id, LocalRequestDTO localRequestDTO){
         Local localExistente = localRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível atualizar: Local não encontrado."));
+        .orElseThrow(() -> new EntityNotFoundException("Não é possível atualizar: Local não encontrado."));
 
         if(localRequestDTO.capacidade()< localExistente.getCapacidade()){
         boolean possuiEventoMaior = eventoRepository.existsByLocalIdAndCapacidadeGreaterThan(id, localRequestDTO.capacidade());
             if(possuiEventoMaior){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível reduzir a capacidade: existe um evento previsto que excede a nova capacidade.");
+                throw new RegraNegocioException("Não é possível reduzir a capacidade: existe um evento previsto que excede a nova capacidade.");
             }
         }
 
@@ -63,7 +64,7 @@ public class LocalService {
 
     public void deletar(@NonNull Long id){
         if(!localRepository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possivel remover: Local não encontrado.");
+            throw new EntityNotFoundException("Não é possivel remover: Local não encontrado.");
         }
         localRepository.deleteById(id);
     }
