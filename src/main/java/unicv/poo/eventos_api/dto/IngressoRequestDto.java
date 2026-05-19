@@ -2,7 +2,6 @@ package unicv.poo.eventos_api.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import unicv.poo.eventos_api.enums.TipoIngressoEnum;
 import unicv.poo.eventos_api.validation.ValueOfEnum;
 
@@ -22,7 +21,7 @@ public record IngressoRequestDto(
         BigDecimal preco,
 
         @NotNull(message = "A quantidade é obrigatória.")
-        @PositiveOrZero(message = "A quantidade não pode ser negativa.")
+        @Positive(message = "A quantidade deve ser positiva.")
         Integer quantidade
 
 ) {
