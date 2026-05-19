@@ -11,6 +11,9 @@ import unicv.poo.eventos_api.entity.Participante;
 public interface ParticipanteRepository extends JpaRepository<Participante, Long> {
     Optional<Participante> findByEmail(String email);
 
+    boolean existsByNome(String nome);
+    
     boolean existsByEmail(String email);
-
+    
+    boolean existsByTelefone(String telefone);
 }
