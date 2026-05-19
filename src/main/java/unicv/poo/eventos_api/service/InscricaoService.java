@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityNotFoundException;
 import unicv.poo.eventos_api.entity.Evento;
 import unicv.poo.eventos_api.entity.Inscricao;
+import unicv.poo.eventos_api.exception.RegraNegocioException;
 import unicv.poo.eventos_api.repository.InscricaoRepository;
 import unicv.poo.eventos_api.repository.EventoRepository;
 
@@ -28,35 +30,42 @@ public class InscricaoService {
     @Transactional
     public Inscricao realizarInscricao(Inscricao inscricao) {
         if (inscricao == null || inscricao.getEvento() == null || inscricao.getParticipante() == null) {
-            throw new IllegalArgumentException("Dados da inscrição invalidos.");
+            throw new RegraNegocioException("Dados da inscrição invalidos.");
         }
 
         Long eventoId = inscricao.getEvento().getId();
         Long participanteId = inscricao.getParticipante().getId();
 
         if (eventoId == null || participanteId == null) {
-            throw new IllegalArgumentException("O ID do evento e do participante não podem ser nulos.");
+            throw new RegraNegocioException("O ID do evento e do participante não podem ser nulos.");
         }
 
         Evento eventoCompleto = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado."));
 
         LocalDate agora = LocalDate.now();
 
         if (eventoCompleto.getDataEvento() != null && agora.isAfter(eventoCompleto.getDataEvento())) {
-            throw new RuntimeException("Não é possível se inscrever em um evento que já iniciou ou ocorreu.");
+            throw new RegraNegocioException("Não é possível se inscrever em um evento que já iniciou ou ocorreu.");
         }
 
-        boolean jaInscrito = repository.existsByParticipanteIdAndEventoIdAndStatus(participanteId, eventoId, "CONFIRMADA");
+        // Aguardando o outro desenvolvedor adicionar o campo status em Evento
+        // if ("CANCELADO".equalsIgnoreCase(eventoCompleto.getStatus())) {
+        // throw new RegraNegocioException("Não é possível se inscrever em um evento que
+        // foi cancelado.");
+        // }
+
+        boolean jaInscrito = repository.existsByParticipanteIdAndEventoIdAndStatus(participanteId, eventoId,
+                "CONFIRMADA");
         if (jaInscrito) {
-            throw new RuntimeException("Este participante já está inscrito neste evento.");
+            throw new RegraNegocioException("Este participante já está inscrito neste evento.");
         }
 
         int capacidadeMaxima = eventoCompleto.getLocal().getCapacidade();
         long totalInscritos = repository.countByEventoIdAndStatus(eventoId, "CONFIRMADA");
 
         if (totalInscritos >= capacidadeMaxima) {
-            throw new RuntimeException("Desculpe, esse evento já atingiu a capacidade máxima de "
+            throw new RegraNegocioException("Desculpe, esse evento já atingiu a capacidade máxima de "
                     + capacidadeMaxima + " vagas.");
         }
 
@@ -70,16 +79,16 @@ public class InscricaoService {
     @Transactional
     public Inscricao cancelarInscricao(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("O ID da inscrição não pode ser nulo.");
+            throw new RegraNegocioException("O ID da inscrição não pode ser nulo.");
         }
 
         Inscricao inscricao = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Inscrição não encontrada."));
+                .orElseThrow(() -> new EntityNotFoundException("Inscrição não encontrada."));
 
         LocalDate hoje = LocalDate.now();
-        
+
         if (inscricao.getEvento().getDataEvento() != null && inscricao.getEvento().getDataEvento().isBefore(hoje)) {
-            throw new RuntimeException("Não é possível cancelar a inscrição de um evento que já ocorreu.");
+            throw new RegraNegocioException("Não é possível cancelar a inscrição de um evento que já ocorreu.");
         }
 
         inscricao.setStatus("CANCELADA");
