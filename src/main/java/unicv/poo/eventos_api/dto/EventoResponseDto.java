@@ -10,6 +10,7 @@ public record EventoResponseDto(
         LocalDate dataEvento,
         LocalTime horario,
         Integer capacidade,
-        Long localId
+        Long localId,
+        String status
 ) {
 }
