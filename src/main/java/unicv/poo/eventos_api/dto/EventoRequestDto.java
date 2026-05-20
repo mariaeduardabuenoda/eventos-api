@@ -4,6 +4,8 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import unicv.poo.eventos_api.enums.StatusEventoEnum;
+import unicv.poo.eventos_api.validation.ValueOfEnum;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,7 +31,11 @@ public record EventoRequestDto(
 
         @NotNull(message = "O id do local é obrigatório.")
         @Positive(message = "O id do local deve ser válido.")
-        Long localId
+        Long localId,
+
+        @NotNull(message = "O status é obrigatório.")
+        @ValueOfEnum(enumClass = StatusEventoEnum.class)
+        String status
 
 ) {
 }
