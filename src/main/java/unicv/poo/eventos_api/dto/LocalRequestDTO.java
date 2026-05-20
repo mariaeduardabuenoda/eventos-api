@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 /* mudanca dia 04/05/2026 */
 public record LocalRequestDTO(
-    Long id,
+   
 
     @NotBlank(message = "O nome é obrigatório")
     String nome,
