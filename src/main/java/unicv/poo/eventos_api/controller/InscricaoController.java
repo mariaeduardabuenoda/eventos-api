@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,7 +16,6 @@ import unicv.poo.eventos_api.dto.InscricaoResponseDTO;
 import unicv.poo.eventos_api.entity.Inscricao;
 import unicv.poo.eventos_api.mapper.InscricaoMapper;
 import unicv.poo.eventos_api.service.InscricaoService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

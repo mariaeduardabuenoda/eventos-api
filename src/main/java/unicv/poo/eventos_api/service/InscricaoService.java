@@ -27,7 +27,7 @@ public class InscricaoService {
         return repository.findAll();
     }
 
-    public Inscricao buscarPorId(Long id) {
+    public Inscricao buscarPorId(long id) {
         return repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Inscrição não encontrada."));
     }
@@ -58,11 +58,9 @@ public class InscricaoService {
             throw new RegraNegocioException("Não é possível se inscrever em um evento que já iniciou ou ocorreu.");
         }
 
-        // Aguardando o outro desenvolvedor adicionar o campo status em Evento
-        // if ("CANCELADO".equalsIgnoreCase(eventoCompleto.getStatus())) {
-        // throw new RegraNegocioException("Não é possível se inscrever em um evento que
-        // foi cancelado.");
-        // }
+         /*if ("CANCELADO".equalsIgnoreCase(eventoCompleto.getStatus())) {
+         throw new RegraNegocioException("Não é possível se inscrever em um evento que foi cancelado.");
+         }*/
 
         boolean jaInscrito = repository.existsByParticipanteIdAndEventoIdAndStatus(participanteId, eventoId,
                 "CONFIRMADA");
