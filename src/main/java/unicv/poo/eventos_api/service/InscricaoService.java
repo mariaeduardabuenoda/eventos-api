@@ -27,6 +27,15 @@ public class InscricaoService {
         return repository.findAll();
     }
 
+    public Inscricao buscarPorId(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Inscrição não encontrada."));
+    }
+
+    public List<Inscricao> listarPorEvento(Long eventoId) {
+        return repository.findByEventoId(eventoId);
+    }
+
     @Transactional
     public Inscricao realizarInscricao(Inscricao inscricao) {
         if (inscricao == null || inscricao.getEvento() == null || inscricao.getParticipante() == null) {

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,9 +17,11 @@ import unicv.poo.eventos_api.dto.InscricaoResponseDTO;
 import unicv.poo.eventos_api.entity.Inscricao;
 import unicv.poo.eventos_api.mapper.InscricaoMapper;
 import unicv.poo.eventos_api.service.InscricaoService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
-@RequestMapping("/api/inscricao")
+@RequestMapping("/api/inscricoes")
 public class InscricaoController {
 
     private final InscricaoService service;
@@ -45,7 +48,21 @@ public class InscricaoController {
                 .toList();
     }
 
-    @PutMapping("/{id}/cancelar")
+    @GetMapping("/{id}")
+    public InscricaoResponseDTO buscarPorId(@PathVariable Long id) {
+        Inscricao entidade = service.buscarPorId(id);
+        return mapper.toResponseDto(entidade);
+    }
+
+    @GetMapping("/evento/{eventoId}")
+    public List<InscricaoResponseDTO> listarPorEvento(@PathVariable Long eventoId) {
+        return service.listarPorEvento(eventoId)
+        .stream()
+        .map(mapper::toResponseDto)
+        .toList();
+    }
+
+    @PatchMapping("/{id}/cancelar")
     public InscricaoResponseDTO cancelarInscricao(@PathVariable Long id){
         Inscricao cancelada = service.cancelarInscricao(id);
         return mapper.toResponseDto(cancelada);
