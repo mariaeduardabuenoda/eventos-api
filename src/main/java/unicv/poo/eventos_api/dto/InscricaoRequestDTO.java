@@ -3,10 +3,7 @@ package unicv.poo.eventos_api.dto;
 import jakarta.validation.constraints.NotNull;
 
 public record InscricaoRequestDTO(
-    @NotNull(message = "O ID do participante é obrigatório")
-    Long participanteId,
+        @NotNull(message = "O ID do participante é obrigatório") Long participanteId,
 
-    @NotNull(message = "O ID do evento é obrigatório")
-    Long eventoId
-) {
+        @NotNull(message = "O ID do evento é obrigatório") Long eventoId) {
 }
