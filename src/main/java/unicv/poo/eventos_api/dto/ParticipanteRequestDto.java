@@ -3,6 +3,7 @@ package unicv.poo.eventos_api.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 
 public record ParticipanteRequestDto(
@@ -16,7 +17,7 @@ public record ParticipanteRequestDto(
     @NotBlank(message = "O email é obrigatório")
     String email,
 
-    @Size(min = 8, max = 15, message = "O telefone deve conter entre 8 e 15 caracteres")
+    @Pattern(regexp = "\\d{8,15}", message = "O telefone deve conter apenas números, com no mínimo 8 e no máximo 15 dígitos")
     @NotBlank(message = "O telefone é obrigatório")
     String telefone
 
