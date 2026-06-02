@@ -1,5 +1,6 @@
 package unicv.poo.eventos_api.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import unicv.poo.eventos_api.service.EventoService;
 
 import java.util.List;
 
+@Tag(name = "Evento", description = "Endpoints para gerenciamento de eventos.")
 @RestController
 @RequestMapping("/api/eventos")
 @RequiredArgsConstructor
