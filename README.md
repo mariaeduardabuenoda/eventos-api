@@ -2,13 +2,13 @@
 
 ## Description
 ***
-
+This API is used in Manage Events , targeting the business rule proposed by the documentation.
 
 ## Technologies Used
 ***
 - Spring Boot
 - PostgreSQL
-- Java
+- Java version 21
 - Docker
 
 ## Prerequisites
