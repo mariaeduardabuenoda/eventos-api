@@ -6,9 +6,16 @@
 
 ## Technologies Used
 ***
+- Spring Boot
+- PostgreSQL
+- Java
+- Docker
 
 ## Prerequisites
 ***
+- Docker
+- JDK
+- PostgreSQL
 
 ## How to Run
 ***
