@@ -1,24 +1,52 @@
 ### Events API
 
 ## Description
-***
-This API is used in Manage Events , targeting the business rule proposed by the documentation.
 
-## Technologies Used
-***
-- Spring Boot
-- PostgreSQL
-- Java version 21
-- Docker
+The **Events API** is a REST API developed for event management, following the business rules defined in the project documentation.
+
+The application allows the complete management of events, participants, locations, tickets and registrations, offering operations for creating, querying, updating and removing data through organized endpoints.
+
+The main purpose of the API is to provide a simple and efficient framework for controlling information related to the organization of events.
+
+## Technologies used
+
+* **Java 21**
+* **Spring Boot**
+* **PostgreSQL**
+* **Docker**
 
 ## Prerequisites
-***
-- Docker
-- JDK
-- PostgreSQL
+
+Before running the project, make sure you have installed:
+
+* Docker
+* JDK 21
+* PostgreSQL
 
 ## How to Run
-***
+
+1. Clone the repository:
+
+```bash
+git clone <url-do-repositorio>
+```
+
+2. Access the project directory:
+
+```bash
+cd events-api
+```
+
+3. Run the application using Docker:
+
+```bash
+docker compose up
+```
+
+The API will be available after service startup.
+
+---
+
 
 ## 🔗 Endpoints documentation
 ### Participant endpoints
